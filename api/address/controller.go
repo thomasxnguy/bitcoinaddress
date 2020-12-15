@@ -1,4 +1,4 @@
-package public
+package address
 
 import (
 	"github.com/go-chi/chi"
@@ -26,7 +26,7 @@ func NewController() (*Controller, error) {
 
 func (rs *Controller) Router() *chi.Mux {
 	r := chi.NewRouter()
-	r.Get("/healthcheck", rs.service.getHealthCheck)
+	r.Post("/p2sh", rs.service.generateP2SHAddress)
 	return r
 }
 

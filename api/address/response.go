@@ -1,4 +1,4 @@
-package public
+package address
 
 type healthCheckResponse struct {
 	Status string `json:"status"`

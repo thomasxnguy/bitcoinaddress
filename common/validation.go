@@ -5,9 +5,9 @@ import (
 )
 
 var (
-	ValidateNetwork = validation.NewStringRule(isCorrectPath, "must be a correct path")
+	ValidatePublicKey = validation.NewStringRule(validatePublicKey, "must be a correct public key")
 )
 
-func isCorrectPath(str string) bool {
+func validatePublicKey(string) bool {
 	return true
 }

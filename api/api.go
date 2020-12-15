@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/thomasxnguy/bitcoinaddress/api/public"
+	"github.com/thomasxnguy/bitcoinaddress/api/address"
 	"github.com/thomasxnguy/bitcoinaddress/logging"
 	"net/http"
 	"time"
@@ -16,9 +16,9 @@ import (
 func New(enableCORS bool) (*chi.Mux, error) {
 	logger := logging.NewLogger()
 
-	publicAPI, err := public.NewController()
+	addressAPI, err := address.NewController()
 	if err != nil {
-		logger.WithField("module", "public").Error(err)
+		logger.WithField("module", "address").Error(err)
 		return nil, err
 	}
 
@@ -41,7 +41,7 @@ func New(enableCORS bool) (*chi.Mux, error) {
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`{"Status":"Ok"}`))
 	})
-	r.Mount("/public", publicAPI.Router())
+	r.Mount("/address", addressAPI.Router())
 
 	return r, nil
 }

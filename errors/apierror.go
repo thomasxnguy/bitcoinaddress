@@ -47,6 +47,17 @@ func ErrInvalidRequest(err error) render.Renderer {
 	}
 }
 
+// ErrBadRequest returns status 400 bad request including errors message.
+func ErrBadRequest(err error) render.Renderer {
+	return &ErrResponse{
+		Err:            err,
+		HTTPStatusCode: http.StatusBadRequest,
+		StatusText:     http.StatusText(http.StatusBadRequest),
+		ErrorText:      err.Error(),
+		AppCode:        "bad_request",
+	}
+}
+
 // ErrValidation returns status 422 Unprocessable Entity stating validation errors.
 func ErrValidation(err error, valErr validation.Errors) render.Renderer {
 	return &ErrResponse{
