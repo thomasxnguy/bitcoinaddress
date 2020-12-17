@@ -1,4 +1,4 @@
-package address
+package p2sh
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation"
@@ -6,13 +6,13 @@ import (
 	"net/http"
 )
 
-type p2shRequest struct {
+type P2shRequest struct {
 	N   int `json:"n"`
 	M int `json:"m"`
 	PublicKeys []string `json:"public_keys"`
 }
 
-func (body *p2shRequest) Bind(r *http.Request) error {
+func (body *P2shRequest) Bind(r *http.Request) error {
 	return validation.ValidateStruct(body,
 		validation.Field(&body.PublicKeys, validation.Required,  validation.Each(common.ValidatePublicKey)),
 		validation.Field(&body.M, validation.Required, validation.Min(0)),

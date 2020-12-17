@@ -8,6 +8,7 @@ require (
 	github.com/go-chi/docgen v1.0.5
 	github.com/go-chi/render v1.0.1
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
+	github.com/google/uuid v1.1.2
 	github.com/magiconair/properties v1.8.2 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.3.3 // indirect

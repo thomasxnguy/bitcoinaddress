@@ -1,12 +1,29 @@
 package address
 
-type healthCheckResponse struct {
-	Status string `json:"status"`
+import (
+	"github.com/google/uuid"
+)
+
+type GenerateAddressResponse struct {
+	UserId *uuid.UUID `json:"user_id"`
+	Address string `json:"address"`
 }
 
-func newHealthCheckResponse() *healthCheckResponse {
-	resp := &healthCheckResponse{
-		Status: "Alive",
+func newGenerateAddressResponse(userId *uuid.UUID) *GenerateAddressResponse {
+	resp := &GenerateAddressResponse{
+		UserId: userId,
+		Address: "",
+	}
+	return resp
+}
+
+type GetAddressResponse struct {
+	Address string `json:"address"`
+}
+
+func newGetAddressResponse() *GetAddressResponse {
+	resp := &GetAddressResponse{
+		Address: "",
 	}
 	return resp
 }

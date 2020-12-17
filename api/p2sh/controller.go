@@ -1,4 +1,4 @@
-package address
+package p2sh
 
 import (
 	"github.com/go-chi/chi"
@@ -26,8 +26,7 @@ func NewController() (*Controller, error) {
 
 func (rs *Controller) Router() *chi.Mux {
 	r := chi.NewRouter()
-	r.Get("/gen", rs.service.generateSegWitAddress)
-	r.Get("/{user_id}", rs.service.getUserSegWitAddress)
+	r.Post("/", rs.service.generateP2SHAddress)
 	return r
 }
 

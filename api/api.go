@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/thomasxnguy/bitcoinaddress/api/address"
+	"github.com/thomasxnguy/bitcoinaddress/api/p2sh"
 	"github.com/thomasxnguy/bitcoinaddress/logging"
 	"net/http"
 	"time"
@@ -17,6 +18,12 @@ func New(enableCORS bool) (*chi.Mux, error) {
 	logger := logging.NewLogger()
 
 	addressAPI, err := address.NewController()
+	if err != nil {
+		logger.WithField("module", "address").Error(err)
+		return nil, err
+	}
+
+	p2shAPI, err := p2sh.NewController()
 	if err != nil {
 		logger.WithField("module", "address").Error(err)
 		return nil, err
@@ -41,6 +48,7 @@ func New(enableCORS bool) (*chi.Mux, error) {
 		w.Write([]byte(`{"Status":"Ok"}`))
 	})
 	r.Mount("/address", addressAPI.Router())
+	r.Mount("/p2sh", p2shAPI.Router())
 
 	return r, nil
 }
