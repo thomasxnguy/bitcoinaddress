@@ -7,8 +7,8 @@ An HTTP server for bitcoin addresses generation.
 
 |    Method | Endpoint    | Description                                                       |
 | :----:  | :-----------: | -------------------------------------------------------------------|
-|  POST | /address/register   | Generate a bitcoin address for a user.        |
-|  GET  | /address/:user_id   | Get the bitcoin address of a user. This address is regenerated from the derivation key's index.       |
+|  GET | /address/gen   | Generate a bitcoin segwit address for a user.        |
+|  GET  | /address/:user_id   | Get the bitcoin address of a user. This address is regenerated from the path's index (no key is actually stored server side)      |
 |  POST | /p2sh   | Generate a n-out-of-m multisig p2sh address.  |
 
 A use case for this boilerplate code is to build a server for managing user's account wallet, allowing users to receive payment in bitcoin.
