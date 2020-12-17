@@ -26,7 +26,6 @@ func New(enableCORS bool) (*chi.Mux, error) {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RequestID)
 	r.Use(SetRequestID())
-	// r.Use(middleware.RealIP)
 	r.Use(middleware.Compress(0))
 	r.Use(middleware.Timeout(15 * time.Second))
 
