@@ -91,3 +91,14 @@ func ErrNotFound(err error) render.Renderer {
 		AppCode:        "not_found",
 	}
 }
+
+// ErrInternalError renders status 500 Internal server error with custom errors message.
+func ErrInternalError(err error) render.Renderer {
+	return &ErrResponse{
+		Err:            err,
+		HTTPStatusCode: http.StatusInternalServerError,
+		StatusText:     http.StatusText(http.StatusInternalServerError),
+		ErrorText:      err.Error(),
+		AppCode:        "internal_error",
+	}
+}

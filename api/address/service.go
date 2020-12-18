@@ -32,18 +32,26 @@ func (rs *Service) generateAddresses(w http.ResponseWriter, r *http.Request) {
 	// Generate a new id.
 	userId := uuid.New()
 
+	// Create a new account, we use the atomic count to generate the key index.
 	var newUser = models.Account{
 		Id:        userId,
 		KeyIndex:  rs.counter.Inc(),
 		CreatedAt: time.Now(),
 	}
-	// Create user
 	rs.AccountStore.Create(&newUser)
 
 	// Get Segwit Address of user
-	segwitAddress := rs.KeyManager.GetSegWitAddressForAccountAt(newUser.KeyIndex)
+	segwitAddress, err := rs.KeyManager.GetSegWitAddressForAccountAt(newUser.KeyIndex)
+	if err != nil {
+		render.Render(w, r, apierrors.ErrInternalError(err))
+		return
+	}
 	// Get Native Segwit Address of user
-	nativeSegwitAddress := rs.KeyManager.GetNativeSegWitAddressForAccountAt(newUser.KeyIndex)
+	nativeSegwitAddress, err := rs.KeyManager.GetNativeSegWitAddressForAccountAt(newUser.KeyIndex)
+	if err != nil {
+		render.Render(w, r, apierrors.ErrInternalError(err))
+		return
+	}
 
 	render.Respond(w, r, newGenerateAddressResponse(&userId, segwitAddress, nativeSegwitAddress))
 }
@@ -64,9 +72,17 @@ func (rs *Service) getUserAddresses(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get Segwit Address of user
-	segwitAddress := rs.KeyManager.GetSegWitAddressForAccountAt(account.KeyIndex)
+	segwitAddress, err := rs.KeyManager.GetSegWitAddressForAccountAt(account.KeyIndex)
+	if err != nil {
+		render.Render(w, r, apierrors.ErrInternalError(err))
+		return
+	}
 	// Get Native Segwit Address of user
-	nativeSegwitAddress := rs.KeyManager.GetNativeSegWitAddressForAccountAt(account.KeyIndex)
+	nativeSegwitAddress, err := rs.KeyManager.GetNativeSegWitAddressForAccountAt(account.KeyIndex)
+	if err != nil {
+		render.Render(w, r, apierrors.ErrInternalError(err))
+		return
+	}
 
 	render.Respond(w, r, newGetAddressResponse(segwitAddress, nativeSegwitAddress ))
 }

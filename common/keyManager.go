@@ -75,39 +75,39 @@ func NewKeyManager() *KeyManager {
 	}
 }
 
-func (km *KeyManager) GetSegWitAddressForAccountAt(index uint32) string{
+func (km *KeyManager) GetSegWitAddressForAccountAt(index uint32) (string, error){
 	// m/49'/coin_type'/index'
 	account, err := km.BIP49MasterKey.Child(index + hdkeychain.HardenedKeyStart)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// m/49'/coin_type'/index'/0 (first external change)
 	accountChange, err := account.Child(0)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// m/49'/coin_type'/index'/0/0 (first external change index)
 	accountChangeIndex, err := accountChange.Child(0)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	accountExternalPub, err := accountChangeIndex.Neuter()
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// BIP49 segwit pay-to-script-hash style address.
 	pubKey, err := accountExternalPub.ECPubKey()
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	witnessProg := btcutil.Hash160(pubKey.SerializeCompressed())
 	scriptSig, err := txscript.NewScriptBuilder().AddOp(txscript.OP_0).AddData(witnessProg).Script()
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	testnet := viper.GetBool("testnet")
@@ -122,37 +122,37 @@ func (km *KeyManager) GetSegWitAddressForAccountAt(index uint32) string{
 		panic(err)
 	}
 
-	return segwitAddress.EncodeAddress()
+	return segwitAddress.EncodeAddress(), nil
 }
 
-func (km *KeyManager) GetNativeSegWitAddressForAccountAt(index uint32) string{
+func (km *KeyManager) GetNativeSegWitAddressForAccountAt(index uint32) (string, error){
 	// m/84'/coin_type'/index'
 	account, err := km.BIP84MasterKey.Child(index + hdkeychain.HardenedKeyStart)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// m/84'/coin_type'/index'/0 (first external change)
 	accountChange, err := account.Child(0)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// m/84'/coin_type'/index'/0/0 (first external change index)
 	accountChangeIndex, err := accountChange.Child(0)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	accountExternalPub, err := accountChangeIndex.Neuter()
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// generate a normal p2wkh address from the pubkey hash
 	pubKey, err := accountExternalPub.ECPubKey()
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	witnessProg := btcutil.Hash160(pubKey.SerializeCompressed())
 
@@ -165,8 +165,8 @@ func (km *KeyManager) GetNativeSegWitAddressForAccountAt(index uint32) string{
 	}
 	nativeSegwitaddress, err := btcutil.NewAddressWitnessPubKeyHash(witnessProg, net)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	return nativeSegwitaddress.EncodeAddress()
+	return nativeSegwitaddress.EncodeAddress(), nil
 }
