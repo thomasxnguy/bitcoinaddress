@@ -1,39 +1,72 @@
 package address
 
 import (
+	"errors"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
-	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/google/uuid"
+	"github.com/thomasxnguy/bitcoinaddress/common"
+	"github.com/thomasxnguy/bitcoinaddress/database"
 	apierrors "github.com/thomasxnguy/bitcoinaddress/errors"
+	"github.com/thomasxnguy/bitcoinaddress/models"
 	"net/http"
+	"time"
 )
 
-// Service to manage HD SegWit addresses
+// Service to generate and manage bitcoin addresses
 type Service struct {
+	AccountStore database.AccountStorer
+	KeyManager *common.KeyManager
+	counter common.Count
 }
 
-func NewService() *Service {
-	return &Service{}
+func NewService(accountStore database.AccountStorer) *Service {
+	return &Service{
+		AccountStore: accountStore,
+		KeyManager:   common.NewKeyManager(),
+	}
 }
 
-// Endpoint to generate a HD SegWit address
-func (rs *Service) generateSegWitAddress(w http.ResponseWriter, r *http.Request) {
+// Endpoint to generate addresses for user. A new account identified by an UUID will be created and mapped to those addresses.
+func (rs *Service) generateAddresses(w http.ResponseWriter, r *http.Request) {
+	// Generate a new id.
 	userId := uuid.New()
-	render.Respond(w, r, newGenerateAddressResponse(&userId))
+
+	var newUser = models.Account{
+		Id:        userId,
+		KeyIndex:  rs.counter.Inc(),
+		CreatedAt: time.Now(),
+	}
+	// Create user
+	rs.AccountStore.Create(&newUser)
+
+	// Get Segwit Address of user
+	segwitAddress := rs.KeyManager.GetSegWitAddressForAccountAt(newUser.KeyIndex)
+	// Get Native Segwit Address of user
+	nativeSegwitAddress := rs.KeyManager.GetNativeSegWitAddressForAccountAt(newUser.KeyIndex)
+
+	render.Respond(w, r, newGenerateAddressResponse(&userId, segwitAddress, nativeSegwitAddress))
 }
 
-// Endpoint to get the address of a perticular user
-func (rs *Service) getUserSegWitAddress(w http.ResponseWriter, r *http.Request) {
-	userId := chi.URLParam(r, "user_id")
-	err := validation.Validate(userId,
-		validation.Required, // not empty
-		is.UUID, //is UUID
-	)
+// Endpoint to get the addresses of a particular user. Return not found is user does not exists.
+func (rs *Service) getUserAddresses(w http.ResponseWriter, r *http.Request) {
+	userIdParam := chi.URLParam(r, "user_id")
+	userId, err := uuid.Parse(userIdParam)
 	if err != nil {
-		render.Render(w, r, apierrors.ErrInvalidRequest(err))
+		render.Render(w, r, apierrors.ErrInvalidRequest(errors.New("Must be a valid user_id")))
 		return
 	}
-	render.Respond(w, r, newGetAddressResponse())
+
+	account, err := rs.AccountStore.Get(userId)
+	if account == nil {
+		render.Render(w, r, apierrors.ErrNotFound(errors.New("User is not found")))
+		return
+	}
+
+	// Get Segwit Address of user
+	segwitAddress := rs.KeyManager.GetSegWitAddressForAccountAt(account.KeyIndex)
+	// Get Native Segwit Address of user
+	nativeSegwitAddress := rs.KeyManager.GetNativeSegWitAddressForAccountAt(account.KeyIndex)
+
+	render.Respond(w, r, newGetAddressResponse(segwitAddress, nativeSegwitAddress ))
 }

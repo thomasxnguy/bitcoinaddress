@@ -1,5 +1,6 @@
 package p2sh
 
+// P2shResponse is the response object for /p2sh
 type P2shResponse struct {
 	P2shAddress string `json:"p2sh_address"`
 }

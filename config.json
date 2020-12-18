@@ -1,3 +1,6 @@
 {
-  "PORT": "0.0.0.0:3000"
+  "PORT": "0.0.0.0:3000",
+  "MNEMONIC": "silent weather color large flip reason soldier plate heavy reveal scan shrimp salute slim boring brief bird area property together length amount tomato fame",
+  "PASSWORD": "Xc2t57Ktz5XSRxQQ",
+  "TESTNET": false
 }

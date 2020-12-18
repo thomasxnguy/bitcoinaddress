@@ -3,6 +3,7 @@ package address
 import (
 	"github.com/go-chi/chi"
 	"github.com/sirupsen/logrus"
+	"github.com/thomasxnguy/bitcoinaddress/database"
 	"github.com/thomasxnguy/bitcoinaddress/logging"
 	"net/http"
 )
@@ -16,7 +17,8 @@ type Controller struct {
 
 // NewController configures and returns application endpoints.
 func NewController() (*Controller, error) {
-	service := NewService()
+	accountStorer := database.NewMockAccountStore()
+	service := NewService(accountStorer)
 
 	controller := &Controller{
 		service: service,
@@ -26,8 +28,8 @@ func NewController() (*Controller, error) {
 
 func (rs *Controller) Router() *chi.Mux {
 	r := chi.NewRouter()
-	r.Get("/gen", rs.service.generateSegWitAddress)
-	r.Get("/{user_id}", rs.service.getUserSegWitAddress)
+	r.Get("/gen", rs.service.generateAddresses)
+	r.Get("/{user_id}", rs.service.getUserAddresses)
 	return r
 }
 

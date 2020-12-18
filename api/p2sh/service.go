@@ -1,14 +1,14 @@
 package p2sh
 
 import (
+	"errors"
 	"github.com/go-chi/render"
 	validation "github.com/go-ozzo/ozzo-validation"
 	apierrors "github.com/thomasxnguy/bitcoinaddress/errors"
 	"net/http"
-	"errors"
 )
 
-// Service to manage bitcoin p2sh address
+// Service to generate and manage bitcoin p2sh address
 type Service struct {
 }
 
@@ -16,7 +16,7 @@ func NewService() *Service {
 	return &Service{}
 }
 
-// Endpoint to generate a p2sh address from bitcoin addresses
+// Endpoint to generate a p2sh address from n, m parameters and public keys
 func (rs *Service) generateP2SHAddress(w http.ResponseWriter, r *http.Request) {
 	body := &P2shRequest{}
 	if err := render.Bind(r, body); err != nil {

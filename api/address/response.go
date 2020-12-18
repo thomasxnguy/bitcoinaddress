@@ -4,26 +4,32 @@ import (
 	"github.com/google/uuid"
 )
 
+// GenerateAddressResponse is the response object for /address/gen
 type GenerateAddressResponse struct {
-	UserId *uuid.UUID `json:"user_id"`
-	Address string `json:"address"`
+	UserId              *uuid.UUID `json:"user_id"`
+	SegwitAddress       string     `json:"segwit_address"`
+	NativeSegwitAddress string     `json:"native_segwit_address"`
 }
 
-func newGenerateAddressResponse(userId *uuid.UUID) *GenerateAddressResponse {
+func newGenerateAddressResponse(userId *uuid.UUID, segwit string, nativesegwit string) *GenerateAddressResponse {
 	resp := &GenerateAddressResponse{
-		UserId: userId,
-		Address: "",
+		UserId:              userId,
+		SegwitAddress:       segwit,
+		NativeSegwitAddress: nativesegwit,
 	}
 	return resp
 }
 
+// GetAddressResponse is the response object for /address/:user_id
 type GetAddressResponse struct {
-	Address string `json:"address"`
+	SegwitAddress       string `json:"segwit_address"`
+	NativeSegwitAddress string `json:"native_segwit_address"`
 }
 
-func newGetAddressResponse() *GetAddressResponse {
+func newGetAddressResponse(segwit string, nativesegwit string) *GetAddressResponse {
 	resp := &GetAddressResponse{
-		Address: "",
+		SegwitAddress:       segwit,
+		NativeSegwitAddress: nativesegwit,
 	}
 	return resp
 }
