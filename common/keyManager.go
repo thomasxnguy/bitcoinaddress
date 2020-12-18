@@ -11,9 +11,9 @@ import (
 )
 
 // KeyManager is in charge of generating the addresses in the application.
-// The master key are generate using a mnemonic sentences following BIP39.
-// We use two master key, one for BIP49 (segwit) and the other for BIP84 (native segwit).
 type KeyManager struct {
+	// The master key are generate using a mnemonic sentences following BIP39.
+	// We use two master key, one for BIP49 (segwit) and the other for BIP84 (native segwit).
     BIP49MasterKey *hdkeychain.ExtendedKey
 	BIP84MasterKey *hdkeychain.ExtendedKey
 	mux sync.Mutex
@@ -76,19 +76,19 @@ func NewKeyManager() *KeyManager {
 }
 
 func (km *KeyManager) GetSegWitAddressForAccountAt(index uint32) string{
-	// m/49'/coin_type'/index
-	account, err := km.BIP49MasterKey.Child(index)
+	// m/49'/coin_type'/index'
+	account, err := km.BIP49MasterKey.Child(index + hdkeychain.HardenedKeyStart)
 	if err != nil {
 		panic(err)
 	}
 
-	// m/49'/coin_type'/index/0 (first external change)
+	// m/49'/coin_type'/index'/0 (first external change)
 	accountChange, err := account.Child(0)
 	if err != nil {
 		panic(err)
 	}
 
-	// m/49'/coin_type'/index/0/0 (first external change index)
+	// m/49'/coin_type'/index'/0/0 (first external change index)
 	accountChangeIndex, err := accountChange.Child(0)
 	if err != nil {
 		panic(err)
@@ -126,19 +126,19 @@ func (km *KeyManager) GetSegWitAddressForAccountAt(index uint32) string{
 }
 
 func (km *KeyManager) GetNativeSegWitAddressForAccountAt(index uint32) string{
-	// m/84'/coin_type'/index
-	account, err := km.BIP84MasterKey.Child(index)
+	// m/84'/coin_type'/index'
+	account, err := km.BIP84MasterKey.Child(index + hdkeychain.HardenedKeyStart)
 	if err != nil {
 		panic(err)
 	}
 
-	// m/84'/coin_type'/index/0 (first external change)
+	// m/84'/coin_type'/index'/0 (first external change)
 	accountChange, err := account.Child(0)
 	if err != nil {
 		panic(err)
 	}
 
-	// m/84'/coin_type'/index/0/0 (first external change index)
+	// m/84'/coin_type'/index'/0/0 (first external change index)
 	accountChangeIndex, err := accountChange.Child(0)
 	if err != nil {
 		panic(err)

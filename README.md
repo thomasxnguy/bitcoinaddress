@@ -51,14 +51,27 @@ Seed (or mnemonic) is currently stored in the config.json. It has potential secu
 | Method |    Endpoint      |     Request           |         Response       |                 Description                                          |  Note |
 | :----: | :--------------: | :-------------------: | :--------------------: | ------------------------------------------------------------------  | ---- |
 |  GET  | /address/gen       |                      | { user_id : UUID, segwit_address : string, native_segwit_address : string } |Generate bitcoin segwit addresses for a user. | segwit_address also refers to nested segwit (with BIP49). native_segwit_address also refers to bech32 (with BIP84).        |
-|  GET  | /address/:user_id  |                      |  { segwit_address : string, native_segwit_address : string } | Get the bitcoin addresses of a user. This address is regenerated from the path's index (no key is actually stored server side)   |   |
+|  GET  | /address/:user_id  |                      |  { segwit_address : string, native_segwit_address : string } | Get the bitcoin addresses of a user. This address is regenerated from the path's index (no key is actually stored server side).   |   |
 |  POST | /p2sh              | { n : int, m: int, public_keys: [pubkey1, pubkey2...] } | { p2sh_address : string } | Generate a n-out-of-m multisig p2sh address.  | |
 
 
-## Examples
+## Examples (Curl)
+
+HeathCheck
+```bash
+curl -X GET http://localhost:3000/health -H 'cache-control: no-cache'
+```
+Address generation
 
 ```bash
-curl
+curl -X GET http://localhost:3000/address/gen -H 'Content-Type: application/json' \
+-H 'cache-control: no-cache'
+```
+
+Get address
+```bash
+curl -X GET http://localhost:3000/address/:user_id -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache'
 ```
 
 ### Todo
