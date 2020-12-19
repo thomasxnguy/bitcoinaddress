@@ -91,13 +91,13 @@ curl -X POST \
 }'
 ```
 
-### Todo
+### Improvements
 
-- [ ] Add integration and unit tests
-- [ ] Replace mock DB by a real DB
-- [ ] Integration with a bitcoin indexer or node to get account value (amount)
-- [ ] Implement sending transactions and implement address auto-increment
-- [ ] Support other coin types
+- Add more unit tests and improve coverage
+- Replace mock DB by a real DB
+- Integration with a bitcoin indexer or node to get account value (amount)
+- Implement sending transactions and implement address auto-increment
+- Support other coin types
 
 ## Resources 
 
