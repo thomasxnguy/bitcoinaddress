@@ -118,7 +118,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"n\" : 2,\n\t\"m\" : 2, \n\t\"public_keys\" : [\"a\",\"b\"]\n}"
+					"raw": "{\n    \"req\": 1,\n    \"public_keys\": [\n        \"04a882d414e478039cd5b52a92ffb13dd5e6bd4515497439dffd691a0f12af9575fa349b5694ed3155b136f09e63975a1700c9f4d4df849323dac06cf3bd6458cd\",\n        \"046ce31db9bdd543e72fe3039a1f1c047dab87037c36a669ff90e28da1848f640de68c2fe913d363a51154a0c62d7adea1b822d05035077418267b1a1379790187\"\n    ]\n}"
 				},
 				"url": {
 					"raw": "http://localhost:3000/p2sh",
