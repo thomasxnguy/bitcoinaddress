@@ -7,10 +7,10 @@ import (
 )
 
 var (
+	// ValidatePublicKey is the validation rule for valid secp256k1 pubkey.
 	ValidatePublicKey = validation.NewStringRule(validatePublicKey, "must be a correct public key")
 )
 
-// validatePublicKey verify its a valid secp256k1 pubkey.
 func validatePublicKey(s string) bool {
 	pubKeyBytes, err := hex.DecodeString(s)
 	if err != nil {

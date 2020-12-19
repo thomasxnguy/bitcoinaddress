@@ -20,6 +20,7 @@ type Service struct {
 	counter      common.Count
 }
 
+// NewService create a new address service
 func NewService(accountStore database.AccountStorer) *Service {
 	return &Service{
 		AccountStore: accountStore,
@@ -65,7 +66,7 @@ func (rs *Service) getUserAddresses(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	account, err := rs.AccountStore.Get(userId)
+	account, _ := rs.AccountStore.Get(userId)
 	if account == nil {
 		render.Render(w, r, apierrors.ErrNotFound(errors.New("User is not found")))
 		return

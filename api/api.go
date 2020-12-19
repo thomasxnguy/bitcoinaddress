@@ -67,6 +67,7 @@ func corsConfig() *cors.Cors {
 	})
 }
 
+// SetRequestID set the X-Request-id in the header.
 func SetRequestID() func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {

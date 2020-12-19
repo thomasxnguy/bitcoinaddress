@@ -24,6 +24,7 @@ func NewController() (*Controller, error) {
 	return controller, nil
 }
 
+// Router exposes p2sh endpoints
 func (rs *Controller) Router() *chi.Mux {
 	r := chi.NewRouter()
 	r.Post("/", rs.service.generateP2SHAddress)

@@ -18,6 +18,7 @@ type Service struct {
 	Net *chaincfg.Params
 }
 
+// NewService create a new p2sh service
 func NewService() *Service {
 	var net *chaincfg.Params
 	testnet := viper.GetBool("testnet")

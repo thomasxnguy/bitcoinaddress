@@ -7,6 +7,7 @@ import (
 )
 
 var (
+	// ErrUniqueConstraint return db errors for id conflict
 	ErrUniqueConstraint = errors.New("id already used")
 )
 

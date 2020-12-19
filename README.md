@@ -1,6 +1,7 @@
 # BitcoinAddress (HTTP)
 [![GoDoc](https://godoc.org/github.com/thomasxnguy/bitcoinaddress?status.svg)](https://godoc.org/github.com/thomasxnguy/bitcoinaddress)
-[![license](https://img.shields.io/github/license/thomasxnguy/bitcoinaddress.svg?maxAge=2592000)](https://github.com/thomasxnguy/bitcoinaddress/LICENSE)
+<a href="https://github.com/thomasxnguy/bitcoinaddress/LICENSE"><img src="https://img.shields.io/github/license/saniales/golang-crypto-trading-bot.svg?maxAge=2592000" alt="License"></a>
+<a href="https://goreportcard.com/report/github.com/thomasxnguy/bitcoinaddress"><img src="https://goreportcard.com/badge/github.com/thomasxnguy/bitcoinaddress" alt="Goreportcard" /></a>
 
 An HTTP server for bitcoin addresses generation.
 

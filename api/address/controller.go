@@ -26,6 +26,7 @@ func NewController() (*Controller, error) {
 	return controller, nil
 }
 
+// Router exposes address endpoints
 func (rs *Controller) Router() *chi.Mux {
 	r := chi.NewRouter()
 	r.Get("/gen", rs.service.generateAddresses)

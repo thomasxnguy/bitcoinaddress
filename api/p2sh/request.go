@@ -12,6 +12,7 @@ type P2shRequest struct {
 	PublicKeys []string `json:"public_keys"`
 }
 
+// Bind checks for validation errors
 func (body *P2shRequest) Bind(r *http.Request) error {
 	return validation.ValidateStruct(body,
 		validation.Field(&body.PublicKeys, validation.Required, validation.Each(common.ValidatePublicKey)),

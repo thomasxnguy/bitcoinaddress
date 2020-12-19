@@ -78,6 +78,7 @@ func NewKeyManager() *KeyManager {
 	}
 }
 
+// GetSegWitAddressForAccountAt generate a segwit address from account index.
 func (km *KeyManager) GetSegWitAddressForAccountAt(index uint32) (string, error) {
 	// m/49'/coin_type'/index'
 	account, err := km.BIP49MasterKey.Child(index + hdkeychain.HardenedKeyStart)
@@ -121,6 +122,7 @@ func (km *KeyManager) GetSegWitAddressForAccountAt(index uint32) (string, error)
 	return segwitAddress.EncodeAddress(), nil
 }
 
+// GetNativeSegWitAddressForAccountAt generate a native segwit address from account index.
 func (km *KeyManager) GetNativeSegWitAddressForAccountAt(index uint32) (string, error) {
 	// m/84'/coin_type'/index'
 	account, err := km.BIP84MasterKey.Child(index + hdkeychain.HardenedKeyStart)
