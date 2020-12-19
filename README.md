@@ -11,8 +11,8 @@ An HTTP server for bitcoin addresses generation.
 |  GET  | /address/:user_id  | Get the bitcoin addresses of a user. This address is regenerated from the path's index (no key is actually stored server side).   |
 |  POST | /p2sh              | Generate a n-out-of-m multisig p2sh address.  |
 
-This boilerplate code can be used  to  build  a user's account wallet management server, allowing users to receive payment in bitcoin.
-A new address will be generated for each user in order to receive payment from their clients. Server will be responsible for signing transactions and manage user's fund.
+This boilerplate code can be used  to  build  a user's account management server, allowing users to receive payment in bitcoin.
+A new address will be generated for each user in order to receive payment from their customers. Server will be responsible for signing transactions and manage user's fund.
 
 
 ## Prerequisites
@@ -53,7 +53,7 @@ Seed (or mnemonic) is currently stored in the config.json. It has potential secu
 | :----: | :--------------: | :-------------------: | :--------------------:   | ---- |
 |  GET  | /address/gen       |                      |{ user_id : UUID, <br> segwit_address : string, <br> native_segwit_address : string } | segwit_address also refers to nested segwit (with BIP49). native_segwit_address also refers to bech32 (with BIP84).        |
 |  GET  | /address/:user_id  |                      |  {segwit_address : string, <br> native_segwit_address : string}  |   |
-|  POST | /p2sh              | {n : int, <br> m: int,  <br>public_keys: [pubkey1, pubkey2...] } | { p2sh_address : string} | |
+|  POST | /p2sh              | {req : int,  <br>public_keys: [pubkey1, pubkey2...] } | { p2sh_address : string} | |
 
 
 ## Examples (Curl)
@@ -75,6 +75,21 @@ curl -X GET http://localhost:3000/address/:user_id -H 'Content-Type: application
   -H 'cache-control: no-cache'
 ```
 
+Generate P2SH address
+```bash
+curl -X POST \
+  http://localhost:3000/p2sh \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache' \
+  -d '{
+    "req": 1,
+    "public_keys": [
+        "04a882d414e478039cd5b52a92ffb13dd5e6bd4515497439dffd691a0f12af9575fa349b5694ed3155b136f09e63975a1700c9f4d4df849323dac06cf3bd6458cd",
+        "046ce31db9bdd543e72fe3039a1f1c047dab87037c36a669ff90e28da1848f640de68c2fe913d363a51154a0c62d7adea1b822d05035077418267b1a1379790187"
+    ]
+}'
+```
+
 ### Todo
 
 - [ ] Add integration and unit tests
@@ -92,3 +107,5 @@ The folder 0_postman contains the postman collection script to run scenarios on 
 [BIP49](https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki)
 
 [BIP84](https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki)
+
+[BIP16 (P2SH)](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki#reference-implementation)

@@ -16,8 +16,8 @@ import (
 // Service to generate and manage bitcoin addresses
 type Service struct {
 	AccountStore database.AccountStorer
-	KeyManager *common.KeyManager
-	counter common.Count
+	KeyManager   *common.KeyManager
+	counter      common.Count
 }
 
 func NewService(accountStore database.AccountStorer) *Service {
@@ -84,5 +84,5 @@ func (rs *Service) getUserAddresses(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render.Respond(w, r, newGetAddressResponse(segwitAddress, nativeSegwitAddress ))
+	render.Respond(w, r, newGetAddressResponse(segwitAddress, nativeSegwitAddress))
 }
