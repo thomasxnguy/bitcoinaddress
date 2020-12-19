@@ -61,11 +61,13 @@ func (rs *Service) generateP2SHAddress(w http.ResponseWriter, r *http.Request) {
 	for _, s := range body.PublicKeys {
 		pubKeyBytes, err := hex.DecodeString(s)
 		if err != nil {
-			panic(err)
+			render.Render(w, r, apierrors.ErrInternalError(err))
+			return
 		}
 		addressPubKey, err := btcutil.NewAddressPubKey(pubKeyBytes, rs.Net)
 		if err != nil {
-			panic(err)
+			render.Render(w, r, apierrors.ErrInternalError(err))
+			return
 		}
 		addressPubKeys = append(addressPubKeys, addressPubKey)
 	}
@@ -73,12 +75,14 @@ func (rs *Service) generateP2SHAddress(w http.ResponseWriter, r *http.Request) {
 	// 2. Create a redeem Script
 	redeemScript, err := txscript.MultiSigScript(addressPubKeys, body.Req)
 	if err != nil {
-		panic(err)
+		render.Render(w, r, apierrors.ErrInternalError(err))
+		return
 	}
 	// 3. Create p2sh adddress from redeem Script
 	p2shAddress, err := btcutil.NewAddressScriptHash(redeemScript, rs.Net)
 	if err != nil {
-		panic(err)
+		render.Render(w, r, apierrors.ErrInternalError(err))
+		return
 	}
 
 	render.Respond(w, r, newP2shResponse(p2shAddress.EncodeAddress()))

@@ -12,7 +12,7 @@ An HTTP server for bitcoin addresses generation.
 |  GET  | /address/:user_id  | Get the bitcoin addresses of a user. This address is regenerated from the path's index (no key is actually stored server side).   |
 |  POST | /p2sh              | Generate a n-out-of-m multisig p2sh address.  |
 
-This boilerplate code can be used  to  build  a user's account management server, allowing users to receive payment in bitcoin.
+A use case for this boilerplate is to  build  a user's account management server, allowing users to receive payment in bitcoin.
 A new address will be generated for each user in order to receive payment from their customers. Server will be responsible for signing transactions and manage user's fund.
 
 
