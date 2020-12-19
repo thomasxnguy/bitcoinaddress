@@ -5,7 +5,6 @@ import (
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcutil"
 	"github.com/btcsuite/btcutil/hdkeychain"
-	"github.com/spf13/viper"
 	"github.com/tyler-smith/go-bip39"
 )
 
@@ -20,13 +19,9 @@ type KeyManager struct {
 }
 
 // NewKeyManager returns an KeyManager.
-func NewKeyManager() *KeyManager {
-	mnemonic := viper.GetString("mnemonic")
-	password := viper.GetString("password")
-
+func NewKeyManager(mnemonic string, password string, testnet bool) *KeyManager {
 	var net *chaincfg.Params
 	var coinType uint32
-	testnet := viper.GetBool("testnet")
 	if testnet {
 		net = &chaincfg.TestNet3Params
 		coinType = 1

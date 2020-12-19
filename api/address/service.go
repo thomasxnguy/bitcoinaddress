@@ -5,6 +5,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 	"github.com/google/uuid"
+	"github.com/spf13/viper"
 	"github.com/thomasxnguy/bitcoinaddress/common"
 	"github.com/thomasxnguy/bitcoinaddress/database"
 	apierrors "github.com/thomasxnguy/bitcoinaddress/errors"
@@ -22,9 +23,12 @@ type Service struct {
 
 // NewService create a new address service
 func NewService(accountStore database.AccountStorer) *Service {
+	mnemonic := viper.GetString("mnemonic")
+	password := viper.GetString("password")
+	testnet := viper.GetBool("testnet")
 	return &Service{
 		AccountStore: accountStore,
-		KeyManager:   common.NewKeyManager(),
+		KeyManager:   common.NewKeyManager(mnemonic, password, testnet),
 	}
 }
 
